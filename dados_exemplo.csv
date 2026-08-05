@@ -1,0 +1,8 @@
+Codigo;Descricao;Qtde_Venda;Preco_Oferta;Data_Inicio;Data_Termino;Custo_Imposto;Preco_Normal;Margem
+1001;Produto Fictício 1;241;17.58;2026-08-01;2026-08-15;13.0;20.19;20.8
+1002;Produto Fictício 2;107;5.32;2026-08-01;2026-08-15;8.17;16.86;32.8
+1003;Produto Fictício 3;58;10.04;2026-08-01;2026-08-15;2.99;14.85;36.2
+1004;Produto Fictício 4;31;12.72;2026-08-01;2026-08-15;6.55;12.97;30.9
+1005;Produto Fictício 5;90;13.22;2026-08-01;2026-08-15;12.64;4.39;6.2
+1006;Produto Fictício 6;133;12.79;2026-08-01;2026-08-15;11.89;10.18;25.7
+1007;Produto Fictício 7;110;11.34;2026-08-01;2026-08-15;9.96;14.0;28.2

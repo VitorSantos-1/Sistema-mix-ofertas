@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.env
+*.log
+*.db
+*.sqlite
+*.xlsx
+*.xls
+*.xlsm
+!**/*_exemplo.*
+dist/
+build/
+*.exe
