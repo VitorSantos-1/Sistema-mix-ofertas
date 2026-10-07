@@ -1,91 +1,77 @@
-# Sistema de Ofertas e Mix de Produtos
+# Sistema de Mix de Ofertas & Encartes (v2.0)
 
-Solução de apoio à gestão de ofertas e mix de produtos que combina um pipeline de dados em Python
-(Pandas) — que limpa a base de ofertas, propaga informações de produto e calcula margens — com um
-módulo em Google Apps Script que padroniza as frentes de venda e os eventos sazonais diretamente nas
-planilhas usadas pela operação.
+Solução full-stack e pipeline de dados para gestão colaborativa de ofertas e mix de produtos em rede de supermercados. Combina uma plataforma moderna com front-end reativo em **React + Tailwind CSS (Vite)**, back-end em tempo real **FastAPI + Socket.IO**, persistência em **MySQL**, além do pipeline de dados analítico em **Python (Pandas)** e módulo de integração em **Google Apps Script**.
 
-> **Nota de confidencialidade:** os dados presentes neste repositório são fictícios, gerados apenas
-> para demonstração. Os dados reais da operação em que o projeto foi utilizado são confidenciais e
-> estão protegidos — nenhum dado real, credencial ou informação de terceiros foi incluído aqui.
+<div align="center">
+  <img src="docs/screenshots/mix_ofertas_app.png" alt="Sistema de Mix de Ofertas - Autenticação e Perfis de Compradores" width="800" />
+</div>
+
+> **Nota de confidencialidade:** todos os dados e cadastros presentes neste repositório são fictícios, gerados apenas para demonstração da arquitetura e das interfaces. Os dados reais da operação em que a solução foi implementada são confidenciais e estão protegidos.
 
 ---
 
 ## Visão Geral
 
-O projeto organiza duas pontas do trabalho de montar uma tabela de ofertas: o **tratamento do dado**
-(limpeza, preenchimento de campos e cálculo de margem, em Python) e a **operação no dia a dia**
-(padronização do mix e dos eventos nas planilhas, em Apps Script). Juntos, reduzem o retrabalho manual
-e diminuem o risco de erro em uma rotina que impacta diretamente preço e margem.
+A definição das ofertas e tabloides em um supermercado envolve múltiplos compradores, centenas de SKUs, margens rigorosas e cotas de espaço em encartes. O sistema atua em duas frentes complementares:
 
-## Contexto de Negócio
-
-A definição das ofertas de um supermercado passa por planilhas que concentram centenas de itens,
-preços, custos e períodos. Feito manualmente, esse processo é propenso a erros de digitação, a campos
-incompletos e a margens calculadas de forma inconsistente — cada um deles com potencial de comprometer
-a rentabilidade de uma campanha inteira. Automatizar a limpeza e o cálculo devolve confiabilidade e
-velocidade a uma decisão comercial recorrente.
-
-## O Problema que Resolve
-
-- **Bases de ofertas sujas e incompletas:** campos de produto que faltam ao longo das linhas.
-- **Cálculo de margem inconsistente**, feito à mão e sujeito a erro.
-- **Falta de padronização** das frentes de venda e dos eventos sazonais entre planilhas.
-
-## Público e Decisões Apoiadas
-
-- **Comercial e Compras:** definem ofertas com margem calculada de forma confiável.
-- **Operação de loja:** trabalha com um mix padronizado e consistente entre eventos.
-
-## Impacto e Valor Gerado
-
-- Elimina etapas manuais de limpeza e preenchimento da base de ofertas.
-- Padroniza o cálculo de margem, reduzindo o risco de campanha no prejuízo.
-- Uniformiza o mix e os eventos sazonais, acelerando a montagem das ofertas.
+1. **Plataforma Colaborativa v2.0 (SPA + API):** Permite que os compradores gerenciem seus itens por departamento (Mercearia, Carnes/Frios, Hortifrúti, etc.), controlem cotas por campanha e salvem suas seleções de forma integrada e segura.
+2. **Pipeline de Dados & Automação:** Rotinas em Pandas para limpeza, propagação de informações (*forward-fill*) e cálculo automático de margens, integradas ao ecossistema de planilhas via Apps Script.
 
 ---
 
-## Arquitetura e Abordagem Técnica
+## Arquitetura e Componentes
 
 ```text
-CSV de ofertas
-     |
-     v
-pipeline_ofertas.py (Pandas)
-   - limpeza de dados
-   - propagação de informações de produto (forward-fill)
-   - cálculo de margem
-     |
-     v
-Base tratada  ---->  mix_ofertas.gs (Google Apps Script)
-                     padroniza frentes de venda e eventos sazonais nas planilhas
+  [ Front-end React / Vite ]  <--- WebSocket / HTTP --->  [ Back-end FastAPI + Socket.IO ]
+             |                                                              |
+   Perfis de Compradores                                           Regras de Margem e Cotas
+   Catálogo & Encartes                                                      |
+                                                                   [ Banco de Dados MySQL ]
+                                                                            |
+  [ Pipeline Pandas (ETL) ]   <--- Exportação de Dados <--------------------+
+             |
+  [ Google Apps Script / Sheets ]
 ```
 
-- **`pipeline_ofertas.py`** — ETL em Pandas: lê o CSV de ofertas, trata valores ausentes, propaga
-  informações de produto ao longo das linhas (forward-fill) e calcula a margem por item.
-- **`mix_ofertas.gs`** — automação em Google Apps Script que padroniza o mix de produtos e os eventos
-  sazonais diretamente nas planilhas operacionais.
+- **Front-end (`src/`):** Interface moderna construída com React 18, Tailwind CSS, Lucide Icons e Vite.
+- **Servidor em Tempo Real (`main.py`):** API FastAPI com Socket.IO para sincronização instantânea de cotas e eventos entre diferentes compradores.
+- **Camada de Banco de Dados (`ofertas_mysql.py`):** Gerenciamento e persistência relacional com MySQL.
+- **Exportação de Relatórios (`excel_export.py`):** Geração dinâmica de planilhas operacionais com OpenPyXL.
+- **Pipeline em Lote (`pipeline_ofertas.py`):** Limpeza, tratamento e cálculo de margem histórica via Pandas.
+- **Módulo de Integração (`mix_ofertas.gs`):** Automação corporativa para padronização no Google Sheets.
+- **Distribuição Desktop:** Suporte a empacotamento com WebView2 (`app_desktop_v2.py`) e instalador Inno Setup (`installer_v2.iss`).
 
-## Stack
-
-Python - Pandas - ETL - Google Apps Script - Google Sheets.
+---
 
 ## Como Rodar
 
+### 1. Plataforma Web / Desktop (v2.0)
+```bash
+# Dependências Python
+pip install fastapi uvicorn socketio python-socketio bcrypt openpyxl pymysql
+
+# Instalar pacotes do front-end e gerar build estático
+npm install
+npm run build
+
+# Iniciar o servidor
+python main.py
+```
+Acesse `http://localhost:3001` no navegador.
+
+### 2. Pipeline em Lote (ETL)
 ```bash
 pip install pandas
-python pipeline_ofertas.py   # usa dados_exemplo.csv
+python pipeline_ofertas.py
 ```
 
-## Estrutura do Projeto
+---
 
-```text
-pipeline_ofertas.py   -> ETL do CSV de ofertas (limpeza, forward-fill, cálculo de margem)
-mix_ofertas.gs        -> Automação em Apps Script (padronização de mix e eventos)
-dados_exemplo.csv     -> Base de exemplo (fictícia)
-```
+## Stack Tecnológica
+`React 18` · `Vite` · `Tailwind CSS` · `FastAPI` · `Python` · `Socket.IO` · `MySQL` · `Pandas` · `Google Apps Script`
+
+---
 
 ## Autor
-
-José Vitor Santos Pinheiro — Análise de Dados e Inteligência Comercial (Varejo e Supply Chain).
+**José Vitor Santos Pinheiro** — Análise de Dados e Inteligência Comercial (Varejo e Supply Chain)  
 Contato: vytorsantt@gmail.com

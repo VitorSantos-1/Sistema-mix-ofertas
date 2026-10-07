@@ -1,0 +1,6 @@
+/* Apenas os UTILITÁRIOS do Tailwind (sem reset/base e sem componentes).
+   O visual base e os componentes (.card, .btn, .field, .chip, .seg…) vêm 100%
+   do original.css (design real e exato do app). Esta camada só garante que
+   qualquer utilitário usado no JSX (flex, grid, gaps, print:, hover:, etc.)
+   exista, resolvendo as cores pelos mesmos tokens :root do original. */
+@tailwind utilities;

@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 244 245 247;
+  --surface: 255 255 255;
+  --surface-2: 240 242 245;
+  --line: 224 227 232;
+  --line-strong: 205 210 217;
+  --ink: 15 22 32;
+  --muted: 88 99 112;
+  --faint: 143 155 168;
+  --brand: 226 84 12;
+  --brand-strong: 194 65 12;
+  --brand-ink: 255 255 255;
+  --app: 13 133 128;
+  --app-ink: 255 255 255;
+  --good: 5 140 92;
+  --warn: 176 100 12;
+  --bad: 206 32 58;
+  --shadow-color: 16 24 38;
+}
+
+html, body, #root { height: 100%; }
+body {
+  background-color: rgb(var(--bg));
+  color: rgb(var(--ink));
+  font-feature-settings: "cv05" 1, "ss01" 1;
+}
+
+/* Barra de rolagem — idêntica ao original */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: rgb(var(--faint) / .35); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+*::-webkit-scrollbar-thumb:hover { background: rgb(var(--faint) / .6); background-clip: padding-box; }
+
+/* ── Sistema de componentes (definições exatas do design original) ── */
+@layer components {
+  .card {
+    background-color: rgb(var(--surface));
+    border: 1px solid rgb(var(--line));
+    border-radius: 1rem;
+    box-shadow: 0 1px 2px rgb(var(--shadow-color) / .04);
+  }
+  .shadow-soft {
+    box-shadow: 0 1px 2px rgb(var(--shadow-color) / .05), 0 6px 20px -8px rgb(var(--shadow-color) / .12);
+  }
+  .field {
+    width: 100%;
+    height: 2.5rem;
+    padding: 0 .75rem;
+    border-radius: .75rem;
+    background-color: rgb(var(--surface));
+    border: 1px solid rgb(var(--line));
+    color: rgb(var(--ink));
+    font-size: .8125rem;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .field::placeholder { color: rgb(var(--faint)); }
+  .field:focus { outline: none; border-color: rgb(var(--brand)); box-shadow: 0 0 0 3px rgb(var(--brand) / .18); }
+  select.field { cursor: pointer; }
+  .label {
+    font-size: 11px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: rgb(var(--faint));
+    display: block;
+  }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    height: 2.5rem; padding: 0 .95rem; border-radius: .75rem;
+    font-size: .8125rem; font-weight: 600; white-space: nowrap; cursor: pointer;
+    transition: background-color .15s, color .15s, border-color .15s, box-shadow .15s, transform .05s;
+  }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .btn-primary { background-color: rgb(var(--brand)); color: rgb(var(--brand-ink)); box-shadow: 0 1px 2px rgb(var(--shadow-color) / .15); }
+  .btn-primary:hover { background-color: rgb(var(--brand-strong)); }
+  .btn-ghost { background-color: transparent; color: rgb(var(--muted)); border: 1px solid rgb(var(--line)); }
+  .btn-ghost:hover { background-color: rgb(var(--surface-2)); color: rgb(var(--ink)); }
+  .btn-danger { background-color: rgb(var(--bad)); color: #fff; }
+  .btn-danger:hover { filter: brightness(.94); }
+  .chip {
+    display: inline-flex; align-items: center; gap: .3rem;
+    padding: .15rem .5rem; border-radius: .5rem;
+    font-size: .6875rem; font-weight: 700; letter-spacing: .02em;
+  }
+}
+
+/* ── Impressão / PDF: compacto, sem sobreposição ── */
+@media print {
+  @page { size: A4 landscape; margin: 10mm; }
+  body { background: #fff; }
+  .no-print { display: none !important; }
+  table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; }
+  th, td {
+    white-space: normal !important; word-break: break-word !important; overflow-wrap: anywhere !important;
+    overflow: visible !important; text-overflow: clip !important; vertical-align: top !important;
+    font-size: 10px !important; line-height: 1.2 !important; padding: 3px 5px !important;
+    border: 1px solid #b04a4a !important;
+  }
+  thead th { background: #e06666 !important; color: #1a1a1a !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  tr, td, th { page-break-inside: avoid !important; }
+}

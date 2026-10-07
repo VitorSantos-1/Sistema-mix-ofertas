@@ -1,0 +1,135 @@
+/* Acréscimos mínimos — o visual base vem 100% do original.css (design real do app). */
+
+/* Impressão / PDF: compacto, sem sobreposição de nomes, sem cortes (item 4-PDF). */
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 8mm;
+  }
+
+  /* Força tema CLARO na impressão (mesmo se o app estiver no modo escuro),
+     senão o texto sai claro sobre o papel branco = "PDF em branco". */
+  :root, :root.dark {
+    --bg: 255 255 255;
+    --surface: 255 255 255;
+    --surface-2: 255 255 255;
+    --line: 224 227 232;
+    --ink: 15 22 32;
+    --muted: 88 99 112;
+    --faint: 143 155 168;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 10px !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  table {
+    width: 100% !important;
+    /* 'fixed' espremia a DESCRIÇÃO/OBS a ~1 caractere (texto saía na vertical,
+       letra por letra = "PDF esquisito"). 'auto' dá a cada coluna a largura do
+       conteúdo, com a descrição ficando larga e as curtas estreitas. */
+    table-layout: auto !important;
+    border-collapse: collapse !important;
+  }
+
+  th, td {
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    vertical-align: top !important;
+    font-size: 9.5px !important;
+    line-height: 1.25 !important;
+    padding: 3px 5px !important;
+    border: 1px solid #d1d5db !important;
+  }
+
+  /* Cabeçalhos das colunas em uma linha só (sem quebrar "DESCRIÇÃO" na vertical). */
+  thead th {
+    white-space: nowrap !important;
+  }
+
+  thead th {
+    background: #ea9999 !important;
+    color: #1a1a1a !important;
+    font-weight: bold !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-banner-div {
+    background: #c2410c !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-banner-int {
+    background: #4b5563 !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-merc-div {
+    background: #fce5cd !important;
+    color: #1f2937 !important;
+    font-weight: bold !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-merc-int {
+    background: #f3f4f6 !important;
+    color: #1f2937 !important;
+    font-weight: bold !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  tr, td, th {
+    page-break-inside: avoid !important;
+  }
+
+  /* Garante que nenhum elemento de formulário HTML apareça na impressão */
+  input, select, textarea, button {
+    display: none !important;
+  }
+}
+
+/* Nome do produto no consolidado NUNCA cortado (item 2). */
+.desc-full {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  word-break: break-word !important;
+}
+
+/* ── Polimento fino de interface ── */
+html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/* Números que atualizam (preços, contadores) alinham em colunas */
+.tnum, .font-mono { font-variant-numeric: tabular-nums; }
+
+/* Botões com toque tátil (sem exagero) — sem transition:all */
+.btn { transition-property: transform, background-color, border-color, color, box-shadow; transition-duration: 150ms; transition-timing-function: ease-out; }
+.btn:active:not(:disabled) { transform: scale(0.975); }
+.icon-btn { transition-property: transform, background-color, color; transition-duration: 150ms; }
+.icon-btn:active:not(:disabled) { transform: scale(0.94); }
+.seg-item:active { transform: scale(0.98); }
+
+/* Quebra de texto mais agradável em títulos/descrições curtas */
+h1, h2, h3, h4 { text-wrap: balance; }
+.card p, .label + *, p.text-\[11px\], p.text-\[12px\] { text-wrap: pretty; }
+
+/* Foco visível e acessível em controles clicáveis */
+:where(button, a, [role="button"]):focus-visible { outline: 2px solid rgb(var(--brand)); outline-offset: 2px; border-radius: .5rem; }
