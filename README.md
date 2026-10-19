@@ -103,4 +103,4 @@ python pipeline_ofertas.py
 ---
 
 ## Autor
-**Vitor Santos** — Análise de Dados e Inteligência Comercial (Varejo & Supply Chain)
+**Vitor Santos** — Análise de Dados e Inteligência Comercial (Varejo, Indústria e Distribuição)
