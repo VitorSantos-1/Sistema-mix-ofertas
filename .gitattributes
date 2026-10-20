@@ -1,0 +1,3 @@
+frontend/** linguist-vendored=true
+*.iss linguist-vendored=true
+*.html linguist-documentation=true
