@@ -104,3 +104,61 @@ python pipeline_ofertas.py
 
 ## Autor
 **Vitor Santos** — Análise de Dados e Inteligência Comercial (Varejo, Indústria e Distribuição)
+
+## 🗺️ Modelo de Dados (DER)
+
+Esquema do sistema de ofertas e mix de produtos (MySQL). Renderizado pelo GitHub via Mermaid. *Dados fictícios de demonstração.*
+
+```mermaid
+erDiagram
+    campanhas ||--o{ campanha_itens : "contem"
+    produtos ||--o{ campanha_itens : "aparece em"
+
+    usuarios {
+        varchar id PK
+        varchar usuario UK
+        varchar nome
+        varchar cargo
+        varchar role
+    }
+    produtos {
+        varchar codigo PK
+        text descricao
+        varchar mercadologico
+        decimal preco_custo
+        decimal preco_venda
+        varchar familia
+    }
+    campanhas {
+        varchar id PK
+        varchar nome
+        varchar tipo "ex: Encarte"
+        varchar status
+        varchar periodo
+    }
+    campanha_itens {
+        varchar id PK
+        varchar campanha_id FK
+        varchar codigo FK
+        varchar parte "divulgacao|interna"
+        decimal preco_oferta
+        decimal preco_app
+        int classificacao_mix
+    }
+    parametros {
+        int id PK
+        varchar tipo
+        varchar mercadologico
+        varchar comprador
+        int meta_divulgacao
+        int meta_interna
+    }
+    parametros_pool {
+        varchar tipo PK
+        int pool_interna
+        int capa_max
+        int app_max
+    }
+```
+
+**Observação:** os vínculos `campanha_itens → campanhas` e `→ produtos` são FKs lógicas (validadas na aplicação). `parametros`/`parametros_pool` guardam metas de mix por tipo/mercadológico.
